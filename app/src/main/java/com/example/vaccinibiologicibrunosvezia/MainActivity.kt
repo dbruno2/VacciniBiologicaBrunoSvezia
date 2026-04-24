@@ -1,10 +1,16 @@
 package com.example.vaccinibiologicibrunosvezia
 
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import android.media.Image
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -14,7 +20,7 @@ import androidx.compose.ui.unit.sp
 import com.example.vaccinibiologicibrunosvezia.model.PatientInput
 import com.example.vaccinibiologicibrunosvezia.model.Vaccine
 import com.example.vaccinibiologicibrunosvezia.ui.theme.VacciniBiologiciBrunoSveziaTheme
-
+import com.example.vaccinibiologicibrunosvezia.ui.theme.Typography
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,14 +66,14 @@ fun SchermataPrincipale() {
 
     var risultato by remember { mutableStateOf("") }
 
-
-
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(20.dp),
+            .padding(20.dp)
+            .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+
     ) {
         Text(text = "VACCINI", fontSize = 40.sp)
         Spacer(modifier = Modifier.height(20.dp))
@@ -85,7 +91,6 @@ fun SchermataPrincipale() {
                 trailingIcon = {
                     ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
                 },
-                modifier = Modifier.menuAnchor()
             )
 
             ExposedDropdownMenu(
@@ -131,12 +136,8 @@ fun SchermataPrincipale() {
                 storiaVaccinale = condizioniText.split(",").map { Vaccine(it.trim()) } //da modificare appena capiamo cosa fare con storia vaccinale
             )
 
-            risultato =
-                "Paziente:\n" +
-                        "Terapia: ${paziente.terapiaBiologica}\n" +
-                        "Età: ${paziente.eta}\n" +
-                        "Condizioni: ${paziente.condizioni}\n" +
-                        "Vaccini: ${paziente.storiaVaccinale}"
+
+
         }) {
             Text("Calcola")
         }
@@ -144,10 +145,29 @@ fun SchermataPrincipale() {
         Spacer(modifier = Modifier.height(20.dp))
 
         Text(text = risultato)
-    }
-    Button(onClick = {
 
-    }) { }
+        Spacer( modifier = Modifier.height(110.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+
+        ){
+            Button(onClick = {
+
+            }) {
+                Text("ITA")
+            }
+
+            Button(onClick = {
+
+            }) {
+                Text("ENG")
+            }
+        }
+    }
+
+
 }
 
 @Composable
