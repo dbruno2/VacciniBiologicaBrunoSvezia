@@ -20,6 +20,7 @@ class RuleEngine(
                     VaccinoiRisultato(
                         vaccino = regola.vaccino,
                         stato = regola.stato
+                        //aggiungi la reason
                     )
                 )
             }

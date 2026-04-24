@@ -4,6 +4,6 @@ data class VaccinoiRisultato (
 
     val vaccino: Vaccino,
     val stato: StatusVaccino,
-    val reason: String? =null
+    val reason: String? =null //traduci come dio comanda tutto uniforme
 
 )
