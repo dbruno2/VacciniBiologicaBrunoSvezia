@@ -1,6 +1,6 @@
 package com.example.vaccinibiologicibrunosvezia.model
 
-enum class StatusVaccino {
+enum class VaccineStatus {
     RACCOMANDATO,
     CONSIGLIATO,
     CONTROINDICATO

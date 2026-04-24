@@ -1,3 +1,37 @@
 <resources>
-    <string name="app_name">VacciniBiologiciBrunoSvezia</string>
+    <string name="app_name" translatable="false">VacciniBiologiciBrunoSvezia</string>
+
+    <string name="reason_age_over_65" translatable="false">Raccomandato over 65 (CDC)</string>
+
+    <string name="reason_pneumococco_anziani" translatable="false">
+        Prevenzione infezioni invasive negli anziani
+    </string>
+
+    <string name="reason_hpv" translatable="false">
+        Prevenzione infezione HPV (linee guida nazionali)
+    </string>
+
+    <string name="reason_adult_flu" translatable="false">
+        Vaccinazione consigliata nella popolazione adulta
+    </string>
+
+    <string name="reason_immunosuppression" translatable="false">
+        Vaccini vivi controindicati in immunosoppressione
+    </string>
+
+    <string name="reason_diabetes" translatable="false">
+        Rischio aumentato complicanze infettive nel diabete
+    </string>
+
+    <string name="reason_liver_diabetes" translatable="false">
+        Indicazione in patologie metaboliche o epatiche
+    </string>
+
+    <string name="reason_asplenia" translatable="false">
+        Alto rischio infezioni invasive in asplenia
+    </string>
+
+    <string name="reason_covid_risk" translatable="false">
+        Raccomandazione generale in pazienti a rischio
+    </string>
 </resources>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name" translatable="false">VacciniBiologiciBrunoSvezia</string>
+
+    <string name="reason_age_over_65">Recommended for age over 65 (CDC)</string>
+
+    <string name="reason_pneumococco_anziani">
+        Prevention of invasive pneumococcal disease in elderly patients
+    </string>
+
+    <string name="reason_hpv">
+        HPV infection prevention
+    </string>
+
+    <string name="reason_adult_flu">
+        Recommended vaccination for adult population
+    </string>
+
+    <string name="reason_immunosuppression">
+        Live vaccines contraindicated in immunosuppressed patients
+    </string>
+
+    <string name="reason_diabetes">
+        Increased risk of infectious complications in diabetes
+    </string>
+
+    <string name="reason_liver_diabetes">
+        Indicated in metabolic or liver diseases
+    </string>
+
+    <string name="reason_asplenia">
+        High risk of invasive infections in asplenia
+    </string>
+
+    <string name="reason_covid_risk">
+        General recommendation for at-risk patients
+    </string>
+
+</resources>

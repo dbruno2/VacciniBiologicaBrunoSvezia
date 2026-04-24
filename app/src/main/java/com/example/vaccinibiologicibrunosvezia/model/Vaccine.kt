@@ -1,6 +1,6 @@
 package com.example.vaccinibiologicibrunosvezia.model
 
-data class Vaccino(
+data class Vaccine(
 
     val nome: String
 
