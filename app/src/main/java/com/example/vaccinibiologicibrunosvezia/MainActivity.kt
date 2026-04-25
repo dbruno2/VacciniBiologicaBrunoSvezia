@@ -70,7 +70,8 @@ fun SchermataPrincipale() {
         modifier = Modifier
             .fillMaxSize()
             .padding(20.dp)
-            .verticalScroll(rememberScrollState()),
+            .verticalScroll(rememberScrollState())
+            .padding(bottom = 80.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
 
@@ -91,6 +92,7 @@ fun SchermataPrincipale() {
                 trailingIcon = {
                     ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
                 },
+                modifier = Modifier.menuAnchor()
             )
 
             ExposedDropdownMenu(
@@ -148,21 +150,24 @@ fun SchermataPrincipale() {
 
         Spacer( modifier = Modifier.height(110.dp))
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+        ) {
+            Row(
+                modifier = Modifier.align(Alignment.BottomCenter),
+                horizontalArrangement = Arrangement.spacedBy(15.dp),
+                verticalAlignment = Alignment.Bottom
 
-        ){
-            Button(onClick = {
+            ) {
+                Button(onClick = { }) {
+                    Text("ITA")
+                }
 
-            }) {
-                Text("ITA")
-            }
-
-            Button(onClick = {
-
-            }) {
-                Text("ENG")
+                Button(onClick = { }) {
+                    Text("ENG")
+                }
             }
         }
     }
