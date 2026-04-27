@@ -36,5 +36,16 @@
     <string name="reason_covid_risk">
         General recommendation for at-risk patients
     </string>
-
+    <string name="title">VACCINES</string>
+    <string name="condizione">Clinic condition</string>
+    <string name="age">Age</string>
+    <string name="ita">ITA</string>
+    <string name="eng">ENG</string>
+    <string name="calcola">Calculate</string>
+    <string-array name="terapie">
+        <item>anti-TNF</item>
+        <item>anti-IL17</item>
+        <item>anti-IL23</item>
+        <item>other immunosuppressants</item>
+    </string-array>
 </resources>
