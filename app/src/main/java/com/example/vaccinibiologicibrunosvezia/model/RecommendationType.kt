@@ -1,7 +1,7 @@
 package com.example.vaccinibiologicibrunosvezia.model
 
-enum class VaccineStatus {
+enum class RecommendationType {
     RACCOMANDATO,
-    CONSIGLIATO,
+    POSSIBILE,
     CONTROINDICATO
 }
