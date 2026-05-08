@@ -36,20 +36,17 @@ class VaccineViewModel(
 
                 if (vaccine != null) {
 
-                    // 🔥 NUOVA LOGICA: già vaccinato
-                    val alreadyDone = vaccine.id in input.vacciniEffettuati
+                    val alreadyDone =
+                        vaccine.id in input.vacciniEffettuati
 
-                    val finalType =
-                        if (alreadyDone) {
-                            RecommendationType.POSSIBILE // oppure “GIÀ FATTO”
-                        } else {
-                            rule.result
-                        }
+                    val type =
+                        if (alreadyDone) RecommendationType.POSSIBILE
+                        else rule.result
 
                     result.add(
                         Recommendation(
-                            vaccineName = vaccine.name,
-                            type = finalType
+                            vaccine = vaccine,   // 👈 FIX IMPORTANTE
+                            type = type
                         )
                     )
                 }
