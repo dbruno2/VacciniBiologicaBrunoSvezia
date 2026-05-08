@@ -16,12 +16,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.os.LocaleListCompat
 import androidx.navigation.NavController
+import com.example.vaccinibiologicibrunosvezia.data.repository.VaccineViewModel
 import com.example.vaccinibiologicibrunosvezia.model.PatientInput
 import com.example.vaccinibiologicibrunosvezia.ui.theme.Verdino
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SchermataPrincipale(navController: NavController) {
+fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewModel) {
     var expanded by remember { mutableStateOf(false) }
 
     val terapie = stringArrayResource(R.array.terapie)
@@ -30,7 +31,6 @@ fun SchermataPrincipale(navController: NavController) {
     var terapiaSelezionata by rememberSaveable { mutableStateOf("") }
     var etaText by rememberSaveable { mutableStateOf("") }
     var condizioniText by rememberSaveable { mutableStateOf("") }
-    var risultato by rememberSaveable { mutableStateOf("") }
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -96,24 +96,19 @@ fun SchermataPrincipale(navController: NavController) {
 
             Button(
                 onClick = {
-                    val paziente = PatientInput(
+                    val input = PatientInput(
                         terapiaBiologica = terapiaSelezionata,
                         eta = etaText.toIntOrNull() ?: 0,
                         condizioni = condizioniText.split(",").map { it.trim() },
-                        storiaVaccinale = condizioniText.split(",").map { Vaccine(it.trim()) }
+                        vacciniEffettuati = emptyList()
                     )
-
-                    // Navigate to the second screen
+                    viewModel.calculateRecommendations(input)
                     navController.navigate("secondaria")
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = Verdino)
             ) {
                 Text(stringResource(R.string.calcola))
             }
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            Text(text = risultato)
         }
 
         TextButton(

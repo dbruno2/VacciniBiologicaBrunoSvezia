@@ -39,7 +39,18 @@
     <string name="age"> Età</string>
     <string name="ita"> ITA</string>
     <string name="eng"> ENG</string>
-    <string name="calcola"> Continua</string>
+    <string name="calcola">Continua</string>
+    <string name="recommended_vaccines">Vaccini Consigliati</string>
+    <string name="status_label">Stato: %1$s</string>
+    <string name="vaccine_antinfluenzale">Antinfluenzale</string>
+    <string name="vaccine_pneumococcico">Pneumococcico</string>
+    <string name="vaccine_hpv">HPV</string>
+    <string name="vaccine_mpr">MPR</string>
+    <string name="vaccine_varicella">Varicella</string>
+    <string name="type_raccomandato">RACCOMANDATO</string>
+    <string name="type_possibile">POSSIBILE</string>
+    <string name="type_controindicato">CONTROINDICATO</string>
+    <string name="back_button">Torna all\'inizio</string>
     <string-array name="terapie">
         <item>anti-TNF</item>
         <item>anti-IL17</item>
