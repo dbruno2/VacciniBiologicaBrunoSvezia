@@ -12,5 +12,8 @@ interface VaccineDao {
     suspend fun getAll(): List<VaccineEntity>
 
     @Insert
-    suspend fun insert(vaccine: VaccineEntity)
+    suspend fun insert(vaccine: VaccineEntity): Long
+
+    @Query("SELECT * FROM VaccineEntity WHERE name = :name LIMIT 1")
+    suspend fun getByName(name: String): VaccineEntity?
 }

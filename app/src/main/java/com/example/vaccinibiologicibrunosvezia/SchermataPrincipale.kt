@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.sp
 import androidx.core.os.LocaleListCompat
 import androidx.navigation.NavController
 import com.example.vaccinibiologicibrunosvezia.model.PatientInput
-import com.example.vaccinibiologicibrunosvezia.model.Vaccine
 import com.example.vaccinibiologicibrunosvezia.ui.theme.Verdino
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -3,6 +3,7 @@ package com.example.vaccinibiologicibrunosvezia.data.repository
 import androidx.lifecycle.ViewModel
 import com.example.vaccinibiologicibrunosvezia.model.PatientInput
 import com.example.vaccinibiologicibrunosvezia.model.Recommendation
+import com.example.vaccinibiologicibrunosvezia.model.RecommendationType
 import kotlinx.coroutines.runBlocking
 
 class VaccineViewModel(
@@ -34,10 +35,21 @@ class VaccineViewModel(
                 val vaccine = vaccines.find { it.id == rule.vaccineId }
 
                 if (vaccine != null) {
+
+                    // 🔥 NUOVA LOGICA: già vaccinato
+                    val alreadyDone = vaccine.id in input.vacciniEffettuati
+
+                    val finalType =
+                        if (alreadyDone) {
+                            RecommendationType.POSSIBILE // oppure “GIÀ FATTO”
+                        } else {
+                            rule.result
+                        }
+
                     result.add(
                         Recommendation(
                             vaccineName = vaccine.name,
-                            type = rule.result
+                            type = finalType
                         )
                     )
                 }
