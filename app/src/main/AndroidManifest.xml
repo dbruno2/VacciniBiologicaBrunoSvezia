@@ -15,7 +15,7 @@
 
         <service
             android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
-            android:enabled="false"
+            android:enabled="true"
             android:exported="false">
             <intent-filter>
                 <action android:name="androidx.appcompat.app.AppLocalesMetadataHolderService" />

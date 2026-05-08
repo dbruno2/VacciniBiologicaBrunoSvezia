@@ -39,7 +39,7 @@
     <string name="age"> Età</string>
     <string name="ita"> ITA</string>
     <string name="eng"> ENG</string>
-    <string name="calcola"> calcola</string>
+    <string name="calcola"> Continua</string>
     <string-array name="terapie">
         <item>anti-TNF</item>
         <item>anti-IL17</item>
