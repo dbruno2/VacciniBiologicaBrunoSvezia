@@ -64,8 +64,10 @@ class VaccineViewModel(
                     val vaccine = vaccines.find { it.id == rule.vaccineId }
                     if (vaccine != null) {
                         val alreadyDone = vaccine.id in input.vacciniEffettuati
-                        val type = if (alreadyDone) RecommendationType.POSSIBILE else rule.result
-                        result.add(Recommendation(vaccine = vaccine, type = type))
+                        if(!alreadyDone) {
+                            val type = rule.result
+                            result.add(Recommendation(vaccine = vaccine, type = type))
+                        }
                     }
                 }
             }
