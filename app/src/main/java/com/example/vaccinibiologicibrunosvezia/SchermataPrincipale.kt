@@ -23,6 +23,7 @@ import com.example.vaccinibiologicibrunosvezia.ui.theme.Verdino
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewModel) {
+    val uiState by viewModel.uiState.collectAsState()
     var expanded by remember { mutableStateOf(false) }
 
     val terapie = stringArrayResource(R.array.terapie)
@@ -94,18 +95,33 @@ fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewMode
 
             Spacer(modifier = Modifier.height(10.dp))
 
+            // Button to navigate to previous vaccines selection
+            OutlinedButton(
+                onClick = { navController.navigate("vaccini_prec") },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = stringResource(R.string.select_vaccines_button))
+                if (uiState.selectedVaccineIds.isNotEmpty()) {
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Badge { Text(uiState.selectedVaccineIds.size.toString()) }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+
             Button(
                 onClick = {
                     val input = PatientInput(
                         terapiaBiologica = terapiaSelezionata,
                         eta = etaText.toIntOrNull() ?: 0,
-                        condizioni = condizioniText.split(",").map { it.trim() },
-                        vacciniEffettuati = emptyList()
+                        condizioni = condizioniText.split(",").map { it.trim() }.filter { it.isNotEmpty() },
+                        vacciniEffettuati = uiState.selectedVaccineIds.toList()
                     )
                     viewModel.calculateRecommendations(input)
                     navController.navigate("secondaria")
                 },
-                colors = ButtonDefaults.buttonColors(containerColor = Verdino)
+                colors = ButtonDefaults.buttonColors(containerColor = Verdino),
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Text(stringResource(R.string.calcola))
             }

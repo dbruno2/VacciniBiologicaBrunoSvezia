@@ -53,6 +53,9 @@
     <string name="type_possibile">POSSIBLE</string>
     <string name="type_controindicato">CONTRAINDICATED</string>
     <string name="back_button">Back to Start</string>
+    <string name="previous_vaccines_title">Previous Vaccines</string>
+    <string name="confirm_button">Confirm</string>
+    <string name="select_vaccines_button">Select Done Vaccines</string>
     <string-array name="terapie">
         <item>anti-TNF</item>
         <item>anti-IL17</item>

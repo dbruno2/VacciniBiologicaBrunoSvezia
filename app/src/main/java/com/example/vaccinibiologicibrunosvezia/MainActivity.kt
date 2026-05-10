@@ -40,6 +40,9 @@ class MainActivity : AppCompatActivity() {
                     composable("principale") {
                         SchermataPrincipale(navController, vaccineViewModel)
                     }
+                    composable("vaccini_prec") {
+                        SchermataVacciniPrec(navController, vaccineViewModel)
+                    }
                     composable("secondaria") {
                         SchermataVaccini(vaccineViewModel, navController)
                     }

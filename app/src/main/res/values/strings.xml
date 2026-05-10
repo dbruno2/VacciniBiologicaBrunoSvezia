@@ -51,6 +51,9 @@
     <string name="type_possibile">POSSIBILE</string>
     <string name="type_controindicato">CONTROINDICATO</string>
     <string name="back_button">Torna all\'inizio</string>
+    <string name="previous_vaccines_title">Vaccini Precedenti</string>
+    <string name="confirm_button">Conferma</string>
+    <string name="select_vaccines_button">Seleziona Vaccini Fatti</string>
     <string-array name="terapie">
         <item>anti-TNF</item>
         <item>anti-IL17</item>

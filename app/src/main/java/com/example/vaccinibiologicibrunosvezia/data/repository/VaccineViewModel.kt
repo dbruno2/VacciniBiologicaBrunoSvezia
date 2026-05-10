@@ -2,6 +2,7 @@ package com.example.vaccinibiologicibrunosvezia.data.repository
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.vaccinibiologicibrunosvezia.data.local.entity.VaccineEntity
 import com.example.vaccinibiologicibrunosvezia.model.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -10,6 +11,8 @@ import kotlinx.coroutines.launch
 
 data class VaccineUiState(
     val recommendations: List<Recommendation> = emptyList(),
+    val allVaccines: List<VaccineEntity> = emptyList(),
+    val selectedVaccineIds: Set<Int> = emptySet(),
     val loading: Boolean = false
 )
 
@@ -19,6 +22,27 @@ class VaccineViewModel(
 
     private val _uiState = MutableStateFlow(VaccineUiState())
     val uiState: StateFlow<VaccineUiState> = _uiState.asStateFlow()
+
+    init {
+        loadVaccines()
+    }
+
+    private fun loadVaccines() {
+        viewModelScope.launch {
+            val vaccines = repository.getVaccines()
+            _uiState.value = _uiState.value.copy(allVaccines = vaccines)
+        }
+    }
+
+    fun toggleVaccineSelection(vaccineId: Int) {
+        val currentSelected = _uiState.value.selectedVaccineIds
+        val newSelected = if (currentSelected.contains(vaccineId)) {
+            currentSelected - vaccineId
+        } else {
+            currentSelected + vaccineId
+        }
+        _uiState.value = _uiState.value.copy(selectedVaccineIds = newSelected)
+    }
 
     fun calculateRecommendations(input: PatientInput) {
         viewModelScope.launch {
@@ -46,7 +70,10 @@ class VaccineViewModel(
                 }
             }
 
-            _uiState.value = VaccineUiState(recommendations = result, loading = false)
+            _uiState.value = _uiState.value.copy(
+                recommendations = result,
+                loading = false
+            )
         }
     }
 }
