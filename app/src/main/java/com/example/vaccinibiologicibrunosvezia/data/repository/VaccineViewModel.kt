@@ -60,12 +60,40 @@ class VaccineViewModel(
                 val conditionsOk = rule.requiredConditions.isEmpty() ||
                                    rule.requiredConditions.all { it in input.condizioni }
 
+
+
                 if (therapyOk && ageOk && conditionsOk) {
                     val vaccine = vaccines.find { it.id == rule.vaccineId }
+                    val liveVaccineContraindicated =
+                        vaccine?.isLive!! &&
+                                (
+                                        input.terapiaBiologica == "anti-TNF" ||
+                                                input.terapiaBiologica == "immunosoppressori"
+                                        )
+
                     if (vaccine != null) {
                         val alreadyDone = vaccine.id in input.vacciniEffettuati
                         if(!alreadyDone) {
                             val type = rule.result
+
+                            if (liveVaccineContraindicated) {
+
+                                result.add(
+                                    Recommendation(
+                                        vaccine = vaccine,
+                                        type = RecommendationType.CONTROINDICATO
+                                    )
+                                )
+
+                            } else {
+
+                                result.add(
+                                    Recommendation(
+                                        vaccine = vaccine,
+                                        type = rule.result
+                                    )
+                                )
+                            }
                             result.add(Recommendation(vaccine = vaccine, type = type))
                         }
                     }
