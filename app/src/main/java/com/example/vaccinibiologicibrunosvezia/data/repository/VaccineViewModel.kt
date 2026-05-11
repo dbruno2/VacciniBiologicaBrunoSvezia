@@ -45,7 +45,9 @@ class VaccineViewModel(
     }
 
     fun calculateRecommendations(input: PatientInput) {
+
         viewModelScope.launch {
+
             _uiState.value = _uiState.value.copy(loading = true)
 
             val rules = repository.getRules()
@@ -54,52 +56,57 @@ class VaccineViewModel(
             val result = mutableListOf<Recommendation>()
 
             for (rule in rules) {
-                val therapyOk = rule.therapy == null || rule.therapy == input.terapiaBiologica
-                val ageOk = (rule.minAge == null || input.eta >= rule.minAge) &&
+
+                val therapyOk =
+                    rule.therapy == null ||
+                            rule.therapy == input.terapiaBiologica
+
+                val ageOk =
+                    (rule.minAge == null || input.eta >= rule.minAge) &&
                             (rule.maxAge == null || input.eta <= rule.maxAge)
-                val conditionsOk = rule.requiredConditions.isEmpty() ||
-                                   rule.requiredConditions.all { it in input.condizioni }
 
-
+                val conditionsOk =
+                    rule.requiredConditions.isEmpty() ||
+                            rule.requiredConditions.any { it in input.condizioni }
 
                 if (therapyOk && ageOk && conditionsOk) {
-                    val vaccine = vaccines.find { it.id == rule.vaccineId }
-                    val liveVaccineContraindicated =
-                        vaccine?.isLive!! &&
-                                (
-                                        input.terapiaBiologica == "anti-TNF" ||
-                                                input.terapiaBiologica == "immunosoppressori"
-                                        )
+
+                    val vaccine =
+                        vaccines.find { it.id == rule.vaccineId }
 
                     if (vaccine != null) {
-                        val alreadyDone = vaccine.id in input.vacciniEffettuati
-                        if(!alreadyDone) {
-                            val type = rule.result
 
-                            if (liveVaccineContraindicated) {
+                        val liveVaccineContraindicated =
+                            vaccine.isLive &&
+                                    (
+                                            input.terapiaBiologica == "anti-TNF" ||
+                                                    input.terapiaBiologica == "immunosoppressori"
+                                            )
 
-                                result.add(
-                                    Recommendation(
-                                        vaccine = vaccine,
-                                        type = RecommendationType.CONTROINDICATO
-                                    )
+                        val alreadyDone =
+                            vaccine.id in input.vacciniEffettuati
+
+                        if (!alreadyDone) {
+
+                            val type =
+                                if (liveVaccineContraindicated) {
+                                    RecommendationType.CONTROINDICATO
+                                } else {
+                                    rule.result
+                                }
+
+                            result.add(
+                                Recommendation(
+                                    vaccine = vaccine,
+                                    type = type
                                 )
-
-                            } else {
-
-                                result.add(
-                                    Recommendation(
-                                        vaccine = vaccine,
-                                        type = rule.result
-                                    )
-                                )
-                            }
-                            result.add(Recommendation(vaccine = vaccine, type = type))
+                            )
                         }
                     }
                 }
             }
 
+            // 🔥 DEVE STARE QUI DENTRO
             _uiState.value = _uiState.value.copy(
                 recommendations = result,
                 loading = false
