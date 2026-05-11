@@ -65,56 +65,115 @@ abstract class AppDatabase : RoomDatabase() {
                     val idVar = vaccineDao.insert(VaccineEntity(name = "Varicella", isLive = true))
 
                     // 5. Inserimento delle REGOLE associate ai vaccini tramite ID
-                    
-                    // Antinfluenzale -> Sempre RACCOMANDATO
-                    ruleDao.insert(RuleEntity(
-                        vaccineId = idInf.toInt(),
-                        therapy = null,
-                        minAge = null,
-                        maxAge = null,
-                        requiredConditions = emptyList(),
-                        result = RecommendationType.RACCOMANDATO
-                    ))
 
-                    // Pneumococcico -> RACCOMANDATO se età >= 65
-                    ruleDao.insert(RuleEntity(
-                        vaccineId = idPne.toInt(),
-                        therapy = null,
-                        minAge = 65,
-                        maxAge = null,
-                        requiredConditions = emptyList(),
-                        result = RecommendationType.RACCOMANDATO
-                    ))
+                    ruleDao.insert(
+                        RuleEntity(
+                            vaccineId = idInf.toInt(),
+                            therapy = null,
+                            minAge = null,
+                            maxAge = null,
+                            requiredConditions = listOf(
+                                "ASMA",
+                                "BPCO",
+                                "OBESITA",
+                                "CARDIOPATIA",
+                                "DIABETE"
+                            ),
+                            result = RecommendationType.RACCOMANDATO
+                        )
+                    )
 
-                    // HPV -> POSSIBILE se età <= 45
-                    ruleDao.insert(RuleEntity(
-                        vaccineId = idHpv.toInt(),
-                        therapy = null,
-                        minAge = null,
-                        maxAge = 45,
-                        requiredConditions = emptyList(),
-                        result = RecommendationType.POSSIBILE
-                    ))
+                    // -----------------------------------
+                    // PNEUMOCOCCICO
+                    // Raccomandato:
+                    // - età >= 65
+                    // - patologie respiratorie/cardiache
+                    // -----------------------------------
 
-                    // MPR -> CONTROINDICATO con anti-TNF
-                    ruleDao.insert(RuleEntity(
-                        vaccineId = idMpr.toInt(),
-                        therapy = "anti-TNF",
-                        minAge = null,
-                        maxAge = null,
-                        requiredConditions = emptyList(),
-                        result = RecommendationType.CONTROINDICATO
-                    ))
+                    ruleDao.insert(
+                        RuleEntity(
+                            vaccineId = idPne.toInt(),
+                            therapy = null,
+                            minAge = 65,
+                            maxAge = null,
+                            requiredConditions = listOf(
+                                "BPCO",
+                                "CARDIOPATIA",
+                                "ASMA",
+                                "MALATTIA_RENALE",
+                                "DIABETE"
+                            ),
+                            result = RecommendationType.RACCOMANDATO
+                        )
+                    )
 
-                    // Varicella -> CONTROINDICATO con immunosoppressori
-                    ruleDao.insert(RuleEntity(
-                        vaccineId = idVar.toInt(),
-                        therapy = "immunosoppressori",
-                        minAge = null,
-                        maxAge = null,
-                        requiredConditions = emptyList(),
-                        result = RecommendationType.CONTROINDICATO
-                    ))
+                    // -----------------------------------
+                    // HPV
+                    // Possibile in pazienti giovani
+                    // e immunodepressi
+                    // -----------------------------------
+
+                    ruleDao.insert(
+                        RuleEntity(
+                            vaccineId = idHpv.toInt(),
+                            therapy = null,
+                            minAge = null,
+                            maxAge = 45,
+                            requiredConditions = listOf(
+                                "IMMUNODEPRESSIONE"
+                            ),
+                            result = RecommendationType.POSSIBILE
+                        )
+                    )
+
+                    // -----------------------------------
+                    // MPR
+                    // Controindicato:
+                    // - vaccino vivo
+                    // - terapia anti-TNF
+                    // - immunodepressione
+                    // -----------------------------------
+
+                    ruleDao.insert(
+                        RuleEntity(
+                            vaccineId = idMpr.toInt(),
+                            therapy = "anti-TNF",
+                            minAge = null,
+                            maxAge = null,
+                            requiredConditions = listOf(
+                                "IMMUNODEPRESSIONE"
+                            ),
+                            result = RecommendationType.CONTROINDICATO
+                        )
+                    )
+
+                    // -----------------------------------
+                    // VARICELLA
+                    // Controindicato:
+                    // - immunosoppressori
+                    // - immunodepressione
+                    // -----------------------------------
+
+                    ruleDao.insert(
+                        RuleEntity(
+                            vaccineId = idVar.toInt(),
+                            therapy = "immunosoppressori",
+                            minAge = null,
+                            maxAge = null,
+                            requiredConditions = listOf(
+                                "IMMUNODEPRESSIONE"
+                            ),
+                            result = RecommendationType.CONTROINDICATO
+                        ))
+                   //condizioni per seba
+                    //"DIABETE"
+                    //"BPCO"
+                    //"CARDIOPATIA"
+                    //"IMMUNODEPRESSIONE"
+                    //"MALATTIA_RENALE"
+                    //"OBESITA"
+                    //"ASMA"
+                    //"EPATOPATIA"
                 }
             }
         }
