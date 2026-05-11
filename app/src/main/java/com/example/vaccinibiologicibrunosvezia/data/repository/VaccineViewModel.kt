@@ -13,6 +13,7 @@ data class VaccineUiState(
     val recommendations: List<Recommendation> = emptyList(),
     val allVaccines: List<VaccineEntity> = emptyList(),
     val selectedVaccineIds: Set<Int> = emptySet(),
+    val selectedConditions: Set<String> = emptySet(),
     val loading: Boolean = false
 )
 
@@ -42,6 +43,16 @@ class VaccineViewModel(
             currentSelected + vaccineId
         }
         _uiState.value = _uiState.value.copy(selectedVaccineIds = newSelected)
+    }
+
+    fun toggleConditionSelection(condition: String) {
+        val currentSelected = _uiState.value.selectedConditions
+        val newSelected = if (currentSelected.contains(condition)) {
+            currentSelected - condition
+        } else {
+            currentSelected + condition
+        }
+        _uiState.value = _uiState.value.copy(selectedConditions = newSelected)
     }
 
     fun calculateRecommendations(input: PatientInput) {

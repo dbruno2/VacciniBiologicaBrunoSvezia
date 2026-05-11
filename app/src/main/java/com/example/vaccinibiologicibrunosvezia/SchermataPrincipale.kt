@@ -31,7 +31,6 @@ fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewMode
 
     var terapiaSelezionata by rememberSaveable { mutableStateOf("") }
     var etaText by rememberSaveable { mutableStateOf("") }
-    var condizioniText by rememberSaveable { mutableStateOf("") }
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -54,7 +53,7 @@ fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewMode
                     value = terapiaSelezionata,
                     onValueChange = {},
                     readOnly = true,
-                    label = { Text(stringResource(R.string.condizione)) },
+                    label = { Text(stringResource(R.string.terapia_biologica)) },
                     trailingIcon = {
                         ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
                     },
@@ -87,11 +86,16 @@ fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewMode
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            OutlinedTextField(
-                value = condizioniText ,
-                onValueChange = { condizioniText  = it },
-                label = { Text(stringResource(R.string.condizione)) }
-            )
+            OutlinedButton(
+                onClick = { navController.navigate("schermata_condizioni") },
+                modifier = Modifier.fillMaxWidth()
+            ){
+                Text(text = stringResource(R.string.condizione))
+                if (uiState.selectedConditions.isNotEmpty()) {
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Badge { Text(uiState.selectedConditions.size.toString()) }
+                }
+            }
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -114,7 +118,7 @@ fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewMode
                     val input = PatientInput(
                         terapiaBiologica = terapiaSelezionata,
                         eta = etaText.toIntOrNull() ?: 0,
-                        condizioni = condizioniText.split(",").map { it.trim() }.filter { it.isNotEmpty() },
+                        condizioni = uiState.selectedConditions.toList(),
                         vacciniEffettuati = uiState.selectedVaccineIds.toList()
                     )
                     viewModel.calculateRecommendations(input)

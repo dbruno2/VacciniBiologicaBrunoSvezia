@@ -54,10 +54,30 @@
     <string name="previous_vaccines_title">Vaccini Precedenti</string>
     <string name="confirm_button">Conferma</string>
     <string name="select_vaccines_button">Seleziona Vaccini Fatti</string>
+    <string name="terapia_biologica">Terapia biologica</string>
     <string-array name="terapie">
         <item>anti-TNF</item>
         <item>anti-IL17</item>
         <item>anti-IL23</item>
         <item>altri immunosoppressori</item>
     </string-array>
+    <string-array name="condizioni">
+        <item>Diabete</item>
+        <item>BPCO</item>
+        <item>Cardiopatia</item>
+        <item>Immunodepressione</item>
+        <item>Malattia renale</item>
+        <item>Obesità</item>
+        <item>Asma</item>
+        <item>Etiopatia</item>
+    </string-array>
+    //condizioni per seba
+    //"BPCO"
+    //"CARDIOPATIA"
+    //"IMMUNODEPRESSIONE"
+    //"MALATTIA_RENALE"
+    //"OBESITA"
+    //"ASMA"
+    //"EPATOPATIA"
+    //diabete
 </resources>

@@ -56,10 +56,21 @@
     <string name="previous_vaccines_title">Previous Vaccines</string>
     <string name="confirm_button">Confirm</string>
     <string name="select_vaccines_button">Select Done Vaccines</string>
+   <string name="terapia_biologica">Biological therapy</string>
     <string-array name="terapie">
         <item>anti-TNF</item>
         <item>anti-IL17</item>
         <item>anti-IL23</item>
         <item>other immunosuppressants</item>
+    </string-array>
+    <string-array name="condizioni">
+        <item>Diabetes</item>
+        <item>COPD</item>
+        <item>Heart disease</item>
+        <item>Immunosuppression</item>
+        <item>Kidney diseas</item>
+        <item>Obesity</item>
+        <item>Asthma</item>
+        <item>Etiopathy</item>
     </string-array>
 </resources>
