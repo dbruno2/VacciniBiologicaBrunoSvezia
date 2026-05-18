@@ -4,9 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.vaccinibiologicibrunosvezia.data.local.entity.VaccineEntity
 import com.example.vaccinibiologicibrunosvezia.model.*
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 data class VaccineUiState(
@@ -30,8 +28,9 @@ class VaccineViewModel(
 
     private fun loadVaccines() {
         viewModelScope.launch {
-            val vaccines = repository.getVaccines()
-            _uiState.value = _uiState.value.copy(allVaccines = vaccines)
+            repository.getVaccines().collect { vaccines ->
+                _uiState.value = _uiState.value.copy(allVaccines = vaccines)
+            }
         }
     }
 
@@ -62,7 +61,7 @@ class VaccineViewModel(
             _uiState.value = _uiState.value.copy(loading = true)
 
             val rules = repository.getRules()
-            val vaccines = repository.getVaccines()
+            val vaccines = _uiState.value.allVaccines
 
             val result = mutableListOf<Recommendation>()
 

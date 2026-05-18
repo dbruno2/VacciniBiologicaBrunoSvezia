@@ -45,8 +45,33 @@
     <string name="vaccine_antinfluenzale">Antinfluenzale</string>
     <string name="vaccine_pneumococcico">Pneumococcico</string>
     <string name="vaccine_hpv">HPV</string>
+    <string name="vaccine_epatite_a">Epatite A</string>
+    <string name="vaccine_epatite_b">Epatite B</string>
+    <string name="vaccine_herpes_zoster">Herpes Zoster</string>
+    <string name="vaccine_covid_19">COVID-19</string>
+    <string name="vaccine_tetano">Tetano</string>
+    <string name="vaccine_difterite">Difterite</string>
+    <string name="vaccine_pertosse">Pertosse</string>
+    <string name="vaccine_meningococco">Meningococco</string>
+    <string name="vaccine_hib">Hib</string>
+    <string name="vaccine_rabbia">Rabbia</string>
+    <string name="vaccine_tifo">Tifo</string>
+    <string name="vaccine_colera">Colera</string>
+    <string name="vaccine_tbe">Encefalite da zecca</string>
+    <string name="vaccine_polio">Poliomielite</string>
     <string name="vaccine_mpr">MPR</string>
     <string name="vaccine_varicella">Varicella</string>
+    <string name="vaccine_rotavirus">Rotavirus</string>
+    <string name="vaccine_febbre_gialla">Febbre Gialla</string>
+
+    <string name="condition_diabete">Diabete</string>
+    <string name="condition_bpco">BPCO</string>
+    <string name="condition_cardiopatia">Cardiopatia</string>
+    <string name="condition_immunodepressione">Immunodepressione</string>
+    <string name="condition_malattia_renale">Malattia Renale</string>
+    <string name="condition_obesita">Obesità</string>
+    <string name="condition_asma">Asma</string>
+    <string name="condition_epatopatia">Epatopatia</string>
     <string name="type_raccomandato">RACCOMANDATO</string>
     <string name="type_possibile">POSSIBILE</string>
     <string name="type_controindicato">CONTROINDICATO</string>
@@ -59,7 +84,7 @@
         <item>anti-TNF</item>
         <item>anti-IL17</item>
         <item>anti-IL23</item>
-        <item>altri immunosoppressori</item>
+        <item>immunosoppressori</item>
     </string-array>
     <string-array name="condizioni">
         <item>Diabete</item>

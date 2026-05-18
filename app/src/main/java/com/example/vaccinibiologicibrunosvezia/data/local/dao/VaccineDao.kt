@@ -4,12 +4,13 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.vaccinibiologicibrunosvezia.data.local.entity.VaccineEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface VaccineDao {
 
     @Query("SELECT * FROM VaccineEntity")
-    suspend fun getAll(): List<VaccineEntity>
+    fun getAll(): Flow<List<VaccineEntity>>
 
     @Insert
     suspend fun insert(vaccine: VaccineEntity): Long
