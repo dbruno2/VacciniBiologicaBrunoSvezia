@@ -1,6 +1,7 @@
 package com.example.vaccinibiologicibrunosvezia
 
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -47,7 +48,8 @@ fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewMode
 
             ExposedDropdownMenuBox(
                 expanded = expanded,
-                onExpandedChange = { expanded = !expanded }
+                onExpandedChange = { expanded = !expanded },
+                modifier = Modifier.fillMaxWidth()
             ) {
                 OutlinedTextField(
                     value = terapiaSelezionata,
@@ -57,7 +59,9 @@ fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewMode
                     trailingIcon = {
                         ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
                     },
-                    modifier = Modifier.menuAnchor(ExposedDropdownMenuAnchorType.PrimaryEditable, true)
+                    modifier = Modifier
+                        .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryEditable, true)
+                        .fillMaxWidth()
                 )
 
                 ExposedDropdownMenu(
@@ -81,37 +85,73 @@ fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewMode
             OutlinedTextField(
                 value = etaText,
                 onValueChange = { etaText = it },
-                label = { Text(stringResource(R.string.age)) }
+                label = { Text(stringResource(R.string.age)) },
+                modifier = Modifier.fillMaxWidth()
             )
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            OutlinedButton(
-                onClick = { navController.navigate("schermata_condizioni") },
-                modifier = Modifier.fillMaxWidth()
-            ){
-                Text(text = stringResource(R.string.condizione))
-                if (uiState.selectedConditions.isNotEmpty()) {
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Badge { Text(uiState.selectedConditions.size.toString()) }
-                }
-            }
-
-            Spacer(modifier = Modifier.height(10.dp))
-
-            // Button to navigate to previous vaccines selection
-            OutlinedButton(
-                onClick = { navController.navigate("vaccini_prec") },
-                modifier = Modifier.fillMaxWidth()
+            // Condizioni
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { navController.navigate("schermata_condizioni") }
             ) {
-                Text(text = stringResource(R.string.select_vaccines_button))
-                if (uiState.selectedVaccineIds.isNotEmpty()) {
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Badge { Text(uiState.selectedVaccineIds.size.toString()) }
-                }
+                OutlinedTextField(
+                    value = if (uiState.selectedConditions.isNotEmpty()) {
+                        "${uiState.selectedConditions.size} selezionate"
+                    } else "",
+                    onValueChange = {},
+                    readOnly = true,
+                    enabled = false,
+                    label = { Text(stringResource(R.string.condizione)) },
+                    trailingIcon = {
+                        if (uiState.selectedConditions.isNotEmpty()) {
+                            Badge { Text(uiState.selectedConditions.size.toString()) }
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        disabledTextColor = MaterialTheme.colorScheme.onSurface,
+                        disabledBorderColor = MaterialTheme.colorScheme.outline,
+                        disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        disabledTrailingIconColor = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                )
             }
 
             Spacer(modifier = Modifier.height(10.dp))
+
+            // Vaccini precedenti
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { navController.navigate("vaccini_prec") }
+            ) {
+                OutlinedTextField(
+                    value = if (uiState.selectedVaccineIds.isNotEmpty()) {
+                        "${uiState.selectedVaccineIds.size} selezionati"
+                    } else "",
+                    onValueChange = {},
+                    readOnly = true,
+                    enabled = false,
+                    label = { Text(stringResource(R.string.select_vaccines_button)) },
+                    trailingIcon = {
+                        if (uiState.selectedVaccineIds.isNotEmpty()) {
+                            Badge { Text(uiState.selectedVaccineIds.size.toString()) }
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        disabledTextColor = MaterialTheme.colorScheme.onSurface,
+                        disabledBorderColor = MaterialTheme.colorScheme.outline,
+                        disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        disabledTrailingIconColor = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                )
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
 
             Button(
                 onClick = {
