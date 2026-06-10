@@ -74,34 +74,3 @@ fun SchermataVacciniPrec(navController: NavController, viewModel: VaccineViewMod
         }
     }
 }
-
-/**
- * Helper per le traduzioni dei nomi dei vaccini.
- */
-@Composable
-private fun getTraduzioneVaccino(nomeDB: String): String {
-    return when (nomeDB) {
-        "Antinfluenzale" -> stringResource(R.string.vaccine_antinfluenzale)
-        "Pneumococcico" -> stringResource(R.string.vaccine_pneumococcico)
-        "HPV" -> stringResource(R.string.vaccine_hpv)
-        "Epatite A" -> stringResource(R.string.vaccine_epatite_a)
-        "Epatite B" -> stringResource(R.string.vaccine_epatite_b)
-        "Herpes Zoster" -> stringResource(R.string.vaccine_herpes_zoster)
-        "COVID-19" -> stringResource(R.string.vaccine_covid_19)
-        "Tetano" -> stringResource(R.string.vaccine_tetano)
-        "Difterite" -> stringResource(R.string.vaccine_difterite)
-        "Pertosse" -> stringResource(R.string.vaccine_pertosse)
-        "Meningococco" -> stringResource(R.string.vaccine_meningococco)
-        "Hib" -> stringResource(R.string.vaccine_hib)
-        "Rabbia" -> stringResource(R.string.vaccine_rabbia)
-        "Tifo" -> stringResource(R.string.vaccine_tifo)
-        "Colera" -> stringResource(R.string.vaccine_colera)
-        "Encefalite da zecca" -> stringResource(R.string.vaccine_tbe)
-        "Poliomielite" -> stringResource(R.string.vaccine_polio)
-        "MPR" -> stringResource(R.string.vaccine_mpr)
-        "Varicella" -> stringResource(R.string.vaccine_varicella)
-        "Rotavirus" -> stringResource(R.string.vaccine_rotavirus)
-        "Febbre Gialla" -> stringResource(R.string.vaccine_febbre_gialla)
-        else -> nomeDB
-    }
-}
