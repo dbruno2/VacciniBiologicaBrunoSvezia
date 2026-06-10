@@ -21,17 +21,27 @@ import com.example.vaccinibiologicibrunosvezia.data.repository.VaccineViewModel
 import com.example.vaccinibiologicibrunosvezia.model.PatientInput
 import com.example.vaccinibiologicibrunosvezia.ui.theme.Verdino
 
+/**
+ * SchermataPrincipale: Il form di inserimento dati per il paziente.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewModel) {
-    val uiState by viewModel.uiState.collectAsState()
-    var expanded by remember { mutableStateOf(false) }
+    // Accediamo direttamente allo stato del ViewModel (grazie a mutableStateOf)
+    val state = viewModel.uiState
 
-    val terapie = stringArrayResource(R.array.terapie)
+    var expanded by remember { mutableStateOf(false) }
+    val terapieDisplay = stringArrayResource(R.array.terapie)
+    val terapieKeys = listOf("anti-TNF", "anti-IL17", "anti-IL23", "immunosoppressori")
     val configuration = LocalConfiguration.current
 
-    var terapiaSelezionata by rememberSaveable { mutableStateOf("") }
+    var terapiaSelezionataKey by rememberSaveable { mutableStateOf("") }
     var etaText by rememberSaveable { mutableStateOf("") }
+
+    val terapiaVisualizzata = if (terapiaSelezionataKey.isEmpty()) "" else {
+        val index = terapieKeys.indexOf(terapiaSelezionataKey)
+        if (index != -1) terapieDisplay[index] else terapiaSelezionataKey
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -46,33 +56,27 @@ fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewMode
             Text(stringResource(R.string.title), fontSize = 40.sp)
             Spacer(modifier = Modifier.height(20.dp))
 
+            // Menu a tendina per la Terapia Biologica
             ExposedDropdownMenuBox(
                 expanded = expanded,
                 onExpandedChange = { expanded = !expanded },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 OutlinedTextField(
-                    value = terapiaSelezionata,
+                    value = terapiaVisualizzata,
                     onValueChange = {},
                     readOnly = true,
                     label = { Text(stringResource(R.string.terapia_biologica)) },
-                    trailingIcon = {
-                        ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
-                    },
-                    modifier = Modifier
-                        .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryEditable, true)
-                        .fillMaxWidth()
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                    modifier = Modifier.menuAnchor(ExposedDropdownMenuAnchorType.PrimaryEditable, true).fillMaxWidth()
                 )
 
-                ExposedDropdownMenu(
-                    expanded = expanded,
-                    onDismissRequest = { expanded = false }
-                ) {
-                    terapie.forEach { terapia ->
+                ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                    terapieDisplay.forEachIndexed { index, terapia ->
                         DropdownMenuItem(
                             text = { Text(terapia) },
                             onClick = {
-                                terapiaSelezionata = terapia
+                                terapiaSelezionataKey = terapieKeys[index]
                                 expanded = false
                             }
                         )
@@ -82,6 +86,7 @@ fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewMode
 
             Spacer(modifier = Modifier.height(10.dp))
 
+            // Campo di testo per l'Età
             OutlinedTextField(
                 value = etaText,
                 onValueChange = { etaText = it },
@@ -91,75 +96,52 @@ fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewMode
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            // Condizioni
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { navController.navigate("schermata_condizioni") }
-            ) {
+            // Selezione Condizioni Cliniche (naviga verso un'altra schermata)
+            Box(modifier = Modifier.fillMaxWidth().clickable { navController.navigate("schermata_condizioni") }) {
                 OutlinedTextField(
-                    value = if (uiState.selectedConditions.isNotEmpty()) {
-                        "${uiState.selectedConditions.size} selezionate"
-                    } else "",
+                    value = if (state.selectedConditions.isNotEmpty()) "${state.selectedConditions.size} selezionate" else "",
                     onValueChange = {},
                     readOnly = true,
                     enabled = false,
                     label = { Text(stringResource(R.string.condizione)) },
-                    trailingIcon = {
-                        if (uiState.selectedConditions.isNotEmpty()) {
-                            Badge { Text(uiState.selectedConditions.size.toString()) }
-                        }
-                    },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
                         disabledTextColor = MaterialTheme.colorScheme.onSurface,
                         disabledBorderColor = MaterialTheme.colorScheme.outline,
-                        disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        disabledTrailingIconColor = MaterialTheme.colorScheme.onSurfaceVariant
+                        disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 )
             }
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            // Vaccini precedenti
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { navController.navigate("vaccini_prec") }
-            ) {
+            // Selezione Vaccini Precedenti
+            Box(modifier = Modifier.fillMaxWidth().clickable { navController.navigate("vaccini_prec") }) {
                 OutlinedTextField(
-                    value = if (uiState.selectedVaccineIds.isNotEmpty()) {
-                        "${uiState.selectedVaccineIds.size} selezionati"
-                    } else "",
+                    value = if (state.selectedVaccineIds.isNotEmpty()) "${state.selectedVaccineIds.size} selezionati" else "",
                     onValueChange = {},
                     readOnly = true,
                     enabled = false,
                     label = { Text(stringResource(R.string.select_vaccines_button)) },
-                    trailingIcon = {
-                        if (uiState.selectedVaccineIds.isNotEmpty()) {
-                            Badge { Text(uiState.selectedVaccineIds.size.toString()) }
-                        }
-                    },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
                         disabledTextColor = MaterialTheme.colorScheme.onSurface,
                         disabledBorderColor = MaterialTheme.colorScheme.outline,
-                        disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        disabledTrailingIconColor = MaterialTheme.colorScheme.onSurfaceVariant
+                        disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 )
             }
 
             Spacer(modifier = Modifier.height(20.dp))
 
+            // Bottone di calcolo
             Button(
                 onClick = {
                     val input = PatientInput(
-                        terapiaBiologica = terapiaSelezionata,
+                        terapiaBiologica = terapiaSelezionataKey,
                         eta = etaText.toIntOrNull() ?: 0,
-                        condizioni = uiState.selectedConditions.toList(),
-                        vacciniEffettuati = uiState.selectedVaccineIds.toList()
+                        condizioni = state.selectedConditions.toList(),
+                        vacciniEffettuati = state.selectedVaccineIds.toList()
                     )
                     viewModel.calculateRecommendations(input)
                     navController.navigate("secondaria")
@@ -171,16 +153,14 @@ fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewMode
             }
         }
 
+        // Tasto cambio lingua rapido
         TextButton(
             onClick = {
-                val currentLocale = configuration.locales[0].language
-                val newLocale = if (currentLocale.startsWith("en")) "it" else "en"
-                val appLocale: LocaleListCompat = LocaleListCompat.forLanguageTags(newLocale)
-                AppCompatDelegate.setApplicationLocales(appLocale)
+                val current = configuration.locales[0].language
+                val next = if (current.startsWith("en")) "it" else "en"
+                AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(next))
             },
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .padding(top = 48.dp, end = 16.dp)
+            modifier = Modifier.align(Alignment.TopEnd).padding(top = 48.dp, end = 16.dp)
         ) {
             Text("ITA/ENG", fontSize = 16.sp)
         }

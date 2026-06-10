@@ -14,18 +14,22 @@ import com.example.vaccinibiologicibrunosvezia.data.local.database.AppDatabase
 import com.example.vaccinibiologicibrunosvezia.data.repository.VaccineRepository
 import com.example.vaccinibiologicibrunosvezia.data.repository.VaccineViewModel
 import com.example.vaccinibiologicibrunosvezia.ui.theme.VacciniBiologiciBrunoSveziaTheme
-import kotlinx.coroutines.MainScope
 
+/**
+ * MainActivity: Punto di ingresso dell'app.
+ * Qui inizializziamo il database e configuriamo il sistema di navigazione.
+ */
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         
-        // Manual DI since VaccineApplication was rolled back
-        val database = AppDatabase.getDatabase(applicationContext, MainScope())
+        // Inizializzazione del Database e del Repository
+        val database = AppDatabase.getDatabase(applicationContext)
         val repository = VaccineRepository(database.vaccineDao(), database.ruleDao())
         
-        val viewModelFactory = object : ViewModelProvider.Factory {
+        // Factory necessaria per passare il Repository al ViewModel
+        val factory = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return VaccineViewModel(repository) as T
             }
@@ -34,8 +38,11 @@ class MainActivity : AppCompatActivity() {
         setContent {
             VacciniBiologiciBrunoSveziaTheme {
                 val navController = rememberNavController()
-                val vaccineViewModel: VaccineViewModel = viewModel(factory = viewModelFactory)
                 
+                // Otteniamo l'istanza del ViewModel usando la factory definita sopra
+                val vaccineViewModel: VaccineViewModel = viewModel(factory = factory)
+                
+                // Configurazione delle rotte dell'applicazione
                 NavHost(navController = navController, startDestination = "principale") {
                     composable("principale") {
                         SchermataPrincipale(navController, vaccineViewModel)
