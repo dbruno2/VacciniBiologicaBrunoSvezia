@@ -30,8 +30,8 @@ fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewMode
     val state = viewModel.uiState
 
     var expanded by remember { mutableStateOf(false) }
-    val terapieDisplay = stringArrayResource(R.array.terapie)
-    val terapieKeys = listOf("anti-TNF", "anti-IL17", "anti-IL23", "immunosoppressori")
+    val terapieLabels = stringArrayResource(R.array.terapie_labels)
+    val terapieKeys = stringArrayResource(R.array.terapie_keys)
     val configuration = LocalConfiguration.current
 
     var terapiaSelezionataKey by rememberSaveable { mutableStateOf("") }
@@ -39,7 +39,7 @@ fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewMode
 
     val terapiaVisualizzata = if (terapiaSelezionataKey.isEmpty()) "" else {
         val index = terapieKeys.indexOf(terapiaSelezionataKey)
-        if (index != -1) terapieDisplay[index] else terapiaSelezionataKey
+        if (index != -1 && index < terapieLabels.size) terapieLabels[index] else terapiaSelezionataKey
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -71,11 +71,13 @@ fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewMode
                 )
 
                 ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                    terapieDisplay.forEachIndexed { index, terapia ->
+                    terapieLabels.forEachIndexed { index, label ->
                         DropdownMenuItem(
-                            text = { Text(terapia) },
+                            text = { Text(label) },
                             onClick = {
-                                terapiaSelezionataKey = terapieKeys[index]
+                                if (index < terapieKeys.size) {
+                                    terapiaSelezionataKey = terapieKeys[index]
+                                }
                                 expanded = false
                             }
                         )
@@ -97,7 +99,7 @@ fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewMode
 
             Box(modifier = Modifier.fillMaxWidth().clickable { navController.navigate("schermata_condizioni") }) {
                 OutlinedTextField(
-                    value = if (state.selectedConditions.isNotEmpty()) "${state.selectedConditions.size} selezionate" else "",
+                    value = if (state.selectedConditions.isNotEmpty()) stringResource(R.string.selected_count_feminine, state.selectedConditions.size) else "",
                     onValueChange = {},
                     readOnly = true,
                     enabled = false,
@@ -116,7 +118,7 @@ fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewMode
 
             Box(modifier = Modifier.fillMaxWidth().clickable { navController.navigate("vaccini_prec") }) {
                 OutlinedTextField(
-                    value = if (state.selectedVaccineIds.isNotEmpty()) "${state.selectedVaccineIds.size} selezionati" else "",
+                    value = if (state.selectedVaccineIds.isNotEmpty()) stringResource(R.string.selected_count_masculine, state.selectedVaccineIds.size) else "",
                     onValueChange = {},
                     readOnly = true,
                     enabled = false,
@@ -160,7 +162,7 @@ fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewMode
             },
             modifier = Modifier.align(Alignment.TopEnd).padding(top = 48.dp, end = 16.dp)
         ) {
-            Text("ITA/ENG", fontSize = 16.sp)
+            Text(stringResource(R.string.lang_toggle), fontSize = 16.sp)
         }
     }
 }

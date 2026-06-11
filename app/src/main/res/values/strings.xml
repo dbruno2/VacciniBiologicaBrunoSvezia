@@ -80,7 +80,13 @@
     <string name="confirm_button">Conferma</string>
     <string name="select_vaccines_button">Seleziona Vaccini Fatti</string>
     <string name="terapia_biologica">Terapia biologica</string>
-    <string-array name="terapie">
+    <string-array name="terapie_keys" translatable="false">
+        <item>anti-TNF</item>
+        <item>anti-IL17</item>
+        <item>anti-IL23</item>
+        <item>immunosoppressori</item>
+    </string-array>
+    <string-array name="terapie_labels">
         <item>anti-TNF</item>
         <item>anti-IL17</item>
         <item>anti-IL23</item>
@@ -105,4 +111,7 @@
     //"ASMA"
     //"EPATOPATIA"
     //diabete
+    <string name="selected_count_masculine">%1$d selezionati</string>
+    <string name="selected_count_feminine">%1$d selezionate</string>
+    <string name="lang_toggle">ITA/ENG</string>
 </resources>

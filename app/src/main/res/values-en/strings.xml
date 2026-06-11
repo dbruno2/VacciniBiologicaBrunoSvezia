@@ -82,7 +82,7 @@
     <string name="confirm_button">Confirm</string>
     <string name="select_vaccines_button">Select Done Vaccines</string>
    <string name="terapia_biologica">Biological therapy</string>
-    <string-array name="terapie">
+    <string-array name="terapie_labels">
         <item>anti-TNF</item>
         <item>anti-IL17</item>
         <item>anti-IL23</item>
@@ -98,4 +98,7 @@
         <item>Asthma</item>
         <item>Etiopathy</item>
     </string-array>
+    <string name="selected_count_masculine">%1$d selected</string>
+    <string name="selected_count_feminine">%1$d selected</string>
+    <string name="lang_toggle">ITA/ENG</string>
 </resources>
