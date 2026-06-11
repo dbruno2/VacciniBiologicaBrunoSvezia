@@ -1,4 +1,4 @@
-package com.example.vaccinibiologicibrunosvezia.ui.theme
+package com.example.vaccinibiologicibrunosvezia.ui
 
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.clickable
@@ -140,7 +140,7 @@ fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewMode
                     viewModel.calculateRecommendations(input)
                     navController.navigate("secondaria")
                 },
-                colors = ButtonDefaults.buttonColors(containerColor = Verdino),
+                colors = ButtonDefaults.buttonColors(containerColor = _root_ide_package_.com.example.vaccinibiologicibrunosvezia.ui.theme.Verdino),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(stringResource(R.string.calcola))

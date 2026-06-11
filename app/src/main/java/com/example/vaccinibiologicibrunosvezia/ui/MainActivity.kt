@@ -1,4 +1,4 @@
-package com.example.vaccinibiologicibrunosvezia.ui.theme
+package com.example.vaccinibiologicibrunosvezia.ui
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -20,7 +20,7 @@ import com.example.vaccinibiologicibrunosvezia.data.repository.VaccineRepository
 import com.example.vaccinibiologicibrunosvezia.data.repository.VaccineViewModel
 import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : androidx.appcompat.app.AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -42,11 +42,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         setContent {
-            VacciniBiologiciBrunoSveziaTheme {
+            _root_ide_package_.com.example.vaccinibiologicibrunosvezia.ui.theme.VacciniBiologiciBrunoSveziaTheme {
                 val navController = rememberNavController()
-                
+
                 val vaccineViewModel: VaccineViewModel = viewModel(factory = factory)
-                
+
                 // Navigazione tra pagine
                 NavHost(navController = navController, startDestination = "principale") {
                     composable("principale") {
@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
                     composable("secondaria") {
                         SchermataVaccini(vaccineViewModel, navController)
                     }
-                    composable("schermata_condizioni"){
+                    composable("schermata_condizioni") {
                         SchermataCondizioni(navController, vaccineViewModel)
                     }
                 }

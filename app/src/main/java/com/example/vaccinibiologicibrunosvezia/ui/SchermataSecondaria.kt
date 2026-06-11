@@ -1,4 +1,4 @@
-package com.example.vaccinibiologicibrunosvezia.ui.theme
+package com.example.vaccinibiologicibrunosvezia.ui
 
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.*
@@ -58,7 +58,7 @@ fun SchermataVaccini(viewModel: VaccineViewModel, navController: NavController) 
             Button(
                 onClick = { navController.popBackStack() },
                 modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Verdino)
+                colors = ButtonDefaults.buttonColors(containerColor = _root_ide_package_.com.example.vaccinibiologicibrunosvezia.ui.theme.Verdino)
             ) {
                 Text(text = stringResource(R.string.back_button))
             }
