@@ -17,7 +17,6 @@ data class VaccineUiState(
     val allVaccines: List<VaccineEntity> = emptyList(),
     val selectedVaccineIds: Set<Int> = emptySet(),
     val selectedConditions: Set<String> = emptySet(),
-    val loading: Boolean = false
 )
 
 /**
@@ -48,16 +47,28 @@ class VaccineViewModel(
 
     // Funzione per selezionare/deselezionare un vaccino fatto
     fun toggleVaccineSelection(vaccineId: Int) {
-        val current = uiState.selectedVaccineIds
-        val next = if (current.contains(vaccineId)) current - vaccineId else current + vaccineId
-        uiState = uiState.copy(selectedVaccineIds = next)
+        val currentIds = uiState.selectedVaccineIds
+
+        val updatedIds = if (vaccineId in currentIds) {
+            currentIds - vaccineId
+        } else {
+            currentIds + vaccineId
+        }
+
+        uiState = uiState.copy(selectedVaccineIds = updatedIds)
     }
 
     // Funzione per selezionare/deselezionare una condizione clinica
     fun toggleConditionSelection(condition: String) {
-        val current = uiState.selectedConditions
-        val next = if (current.contains(condition)) current - condition else current + condition
-        uiState = uiState.copy(selectedConditions = next)
+        val currentConditions = uiState.selectedConditions
+
+        val updatedConditions = if (condition in currentConditions) {
+            currentConditions - condition
+        } else {
+            currentConditions + condition
+        }
+
+        uiState = uiState.copy(selectedConditions = updatedConditions)
     }
 
     /**
@@ -66,7 +77,6 @@ class VaccineViewModel(
      */
     fun calculateRecommendations(input: PatientInput) {
         viewModelScope.launch {
-            uiState = uiState.copy(loading = true)
 
             val rules = repository.getRules()
             val vaccines = uiState.allVaccines
@@ -100,7 +110,6 @@ class VaccineViewModel(
             // Aggiorniamo lo stato con i risultati (rimuovendo duplicati per sicurezza)
             uiState = uiState.copy(
                 recommendations = results.distinctBy { it.vaccine.id },
-                loading = false
             )
         }
     }

@@ -37,9 +37,7 @@ fun SchermataVaccini(viewModel: VaccineViewModel, navController: NavController) 
 
             Spacer(modifier = Modifier.height(40.dp))
 
-            if (state.loading) {
-                CircularProgressIndicator()
-            } else {
+
                 LazyColumn(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     items(state.recommendations) { rec ->
                         // Traduzione dinamica basata sul nome del database
@@ -58,7 +56,7 @@ fun SchermataVaccini(viewModel: VaccineViewModel, navController: NavController) 
                         }
                     }
                 }
-            }
+
 
             Spacer(modifier = Modifier.height(16.dp))
 

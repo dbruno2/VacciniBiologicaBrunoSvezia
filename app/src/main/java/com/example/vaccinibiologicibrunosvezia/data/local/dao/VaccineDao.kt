@@ -17,4 +17,5 @@ interface VaccineDao {
 
     @Query("SELECT * FROM VaccineEntity WHERE name = :name LIMIT 1")
     suspend fun getByName(name: String): VaccineEntity?
+
 }

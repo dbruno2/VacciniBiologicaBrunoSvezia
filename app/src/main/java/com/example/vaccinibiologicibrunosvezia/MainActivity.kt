@@ -10,10 +10,15 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.vaccinibiologicibrunosvezia.data.local.database.AppDatabase
+import com.example.vaccinibiologicibrunosvezia.data.local.database.DatabaseSeeder
 import com.example.vaccinibiologicibrunosvezia.data.repository.VaccineRepository
 import com.example.vaccinibiologicibrunosvezia.data.repository.VaccineViewModel
 import com.example.vaccinibiologicibrunosvezia.ui.theme.VacciniBiologiciBrunoSveziaTheme
+import kotlinx.coroutines.launch
 
 /**
  * MainActivity: Punto di ingresso dell'app.
@@ -26,12 +31,18 @@ class MainActivity : AppCompatActivity() {
         
         // Inizializzazione del Database e del Repository
         val database = AppDatabase.getDatabase(applicationContext)
+
+        // Seeding del database all'avvio dell'app in modo asincrono
+        lifecycleScope.launch {
+            DatabaseSeeder.seed(database)
+        }
+
         val repository = VaccineRepository(database.vaccineDao(), database.ruleDao())
         
         // Factory necessaria per passare il Repository al ViewModel
-        val factory = object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return VaccineViewModel(repository) as T
+        val factory = viewModelFactory {
+            initializer {
+                VaccineViewModel(repository)
             }
         }
 
