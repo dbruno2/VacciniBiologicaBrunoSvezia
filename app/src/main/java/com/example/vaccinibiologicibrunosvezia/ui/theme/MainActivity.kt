@@ -1,4 +1,4 @@
-package com.example.vaccinibiologicibrunosvezia
+package com.example.vaccinibiologicibrunosvezia.ui.theme
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -7,8 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -20,7 +18,6 @@ import com.example.vaccinibiologicibrunosvezia.data.local.database.AppDatabase
 import com.example.vaccinibiologicibrunosvezia.data.local.database.DatabaseSeeder
 import com.example.vaccinibiologicibrunosvezia.data.repository.VaccineRepository
 import com.example.vaccinibiologicibrunosvezia.data.repository.VaccineViewModel
-import com.example.vaccinibiologicibrunosvezia.ui.theme.VacciniBiologiciBrunoSveziaTheme
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {

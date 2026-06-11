@@ -1,4 +1,4 @@
-package com.example.vaccinibiologicibrunosvezia
+package com.example.vaccinibiologicibrunosvezia.ui.theme
 
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.*
@@ -14,8 +14,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.os.LocaleListCompat
 import androidx.navigation.NavController
+import com.example.vaccinibiologicibrunosvezia.R
 import com.example.vaccinibiologicibrunosvezia.data.repository.VaccineViewModel
-import com.example.vaccinibiologicibrunosvezia.ui.theme.Verdino
 
 @Composable
 fun SchermataVacciniPrec(navController: NavController, viewModel: VaccineViewModel) {
