@@ -14,9 +14,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.os.LocaleListCompat
 import androidx.navigation.NavController
-import com.example.vaccinibiologicibrunosvezia.R
 import com.example.vaccinibiologicibrunosvezia.data.repository.VaccineViewModel
 import com.example.vaccinibiologicibrunosvezia.model.RecommendationType
+import com.example.vaccinibiologicibrunosvezia.ui.theme.Verdino
+
+import androidx.compose.ui.platform.LocalContext
+import com.example.vaccinibiologicibrunosvezia.R
 
 
 @Composable
@@ -36,6 +39,7 @@ fun SchermataVaccini(viewModel: VaccineViewModel, navController: NavController) 
 
                 LazyColumn(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     items(state.recommendations) { rec ->
+
                         val nomeTradotto = getTraduzioneVaccino(rec.vaccine.name)
                         val statoTradotto = when (rec.type) {
                             RecommendationType.RACCOMANDATO -> stringResource(R.string.type_raccomandato)
@@ -58,11 +62,12 @@ fun SchermataVaccini(viewModel: VaccineViewModel, navController: NavController) 
             Button(
                 onClick = { navController.popBackStack() },
                 modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = _root_ide_package_.com.example.vaccinibiologicibrunosvezia.ui.theme.Verdino)
+                colors = ButtonDefaults.buttonColors(containerColor = Verdino)
             ) {
                 Text(text = stringResource(R.string.back_button))
             }
         }
+
 
         TextButton(
             onClick = {
@@ -77,3 +82,9 @@ fun SchermataVaccini(viewModel: VaccineViewModel, navController: NavController) 
 }
 
 
+@Composable
+fun getTraduzioneVaccino(nomeDB: String): String {
+    val context = LocalContext.current
+    val resId = context.resources.getIdentifier(nomeDB, "string", context.packageName)
+    return if (resId != 0) stringResource(resId) else nomeDB
+}

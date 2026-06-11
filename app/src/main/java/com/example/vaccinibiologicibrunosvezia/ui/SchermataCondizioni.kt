@@ -1,23 +1,11 @@
 package com.example.vaccinibiologicibrunosvezia.ui
 
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -29,14 +17,16 @@ import androidx.core.os.LocaleListCompat
 import androidx.navigation.NavController
 import com.example.vaccinibiologicibrunosvezia.R
 import com.example.vaccinibiologicibrunosvezia.data.repository.VaccineViewModel
+import com.example.vaccinibiologicibrunosvezia.ui.theme.Verdino
+
 
 @Composable
 fun SchermataCondizioni(navController: NavController, viewModel: VaccineViewModel) {
     val state = viewModel.uiState
     val configuration = LocalConfiguration.current
 
-    // recupera le condizioni dalle risorse
-    val condizioni = stringArrayResource(R.array.condizioni)
+    val nomiCondizioni = stringArrayResource(R.array.condizioni)
+    val chiaviDatabase = listOf("DIABETE", "BPCO", "CARDIOPATIA", "IMMUNODEPRESSIONE", "MALATTIA_RENALE", "OBESITA", "ASMA", "EPATOPATIA")
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -48,16 +38,19 @@ fun SchermataCondizioni(navController: NavController, viewModel: VaccineViewMode
             Spacer(modifier = Modifier.height(20.dp))
 
             LazyColumn(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                items(condizioni.toList()) { condizione ->
-                    Row(
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Checkbox(
-                            checked = state.selectedConditions.contains(condizione),
-                            onCheckedChange = { viewModel.toggleConditionSelection(condizione) }
-                        )
-                        Text(text = condizione, fontSize = 18.sp)
+                itemsIndexed(nomiCondizioni.toList()) { index, nome ->
+                    val chiave = chiaviDatabase.getOrElse(index) { "" }
+                    if (chiave.isNotEmpty()) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Checkbox(
+                                checked = state.selectedConditions.contains(chiave),
+                                onCheckedChange = { viewModel.toggleConditionSelection(chiave) }
+                            )
+                            Text(text = nome, fontSize = 18.sp)
+                        }
                     }
                 }
             }
@@ -67,12 +60,13 @@ fun SchermataCondizioni(navController: NavController, viewModel: VaccineViewMode
             Button(
                 onClick = { navController.popBackStack() },
                 modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(containerColor = _root_ide_package_.com.example.vaccinibiologicibrunosvezia.ui.theme.Verdino)
+                colors = ButtonDefaults.buttonColors(containerColor = Verdino)
             ) {
                 Text(text = stringResource(R.string.confirm_button))
             }
         }
 
+        // Tasto lingua
         TextButton(
             onClick = {
                 val next = if (configuration.locales[0].language.startsWith("en")) "it" else "en"

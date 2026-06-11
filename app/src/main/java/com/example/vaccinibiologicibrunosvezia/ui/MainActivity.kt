@@ -4,9 +4,6 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -18,23 +15,26 @@ import com.example.vaccinibiologicibrunosvezia.data.local.database.AppDatabase
 import com.example.vaccinibiologicibrunosvezia.data.local.database.DatabaseSeeder
 import com.example.vaccinibiologicibrunosvezia.data.repository.VaccineRepository
 import com.example.vaccinibiologicibrunosvezia.data.repository.VaccineViewModel
+import com.example.vaccinibiologicibrunosvezia.ui.theme.VacciniBiologiciBrunoSveziaTheme
 import kotlinx.coroutines.launch
 
-class MainActivity : androidx.appcompat.app.AppCompatActivity() {
+
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         
+
         val database = AppDatabase.getDatabase(applicationContext)
 
-        // Seeding database
+
         lifecycleScope.launch {
             DatabaseSeeder.seed(database)
         }
 
         val repository = VaccineRepository(database.vaccineDao(), database.ruleDao())
         
-        // Factory
+
         val factory = viewModelFactory {
             initializer {
                 VaccineViewModel(repository)
@@ -42,12 +42,13 @@ class MainActivity : androidx.appcompat.app.AppCompatActivity() {
         }
 
         setContent {
-            _root_ide_package_.com.example.vaccinibiologicibrunosvezia.ui.theme.VacciniBiologiciBrunoSveziaTheme {
+            VacciniBiologiciBrunoSveziaTheme {
                 val navController = rememberNavController()
+                
 
                 val vaccineViewModel: VaccineViewModel = viewModel(factory = factory)
+                
 
-                // Navigazione tra pagine
                 NavHost(navController = navController, startDestination = "principale") {
                     composable("principale") {
                         SchermataPrincipale(navController, vaccineViewModel)
@@ -58,18 +59,11 @@ class MainActivity : androidx.appcompat.app.AppCompatActivity() {
                     composable("secondaria") {
                         SchermataVaccini(vaccineViewModel, navController)
                     }
-                    composable("schermata_condizioni") {
+                    composable("schermata_condizioni"){
                         SchermataCondizioni(navController, vaccineViewModel)
                     }
                 }
             }
         }
     }
-}
-
-@Composable
-fun getTraduzioneVaccino(nomeDB: String): String {
-    val context = LocalContext.current
-    val resId = context.resources.getIdentifier(nomeDB, "string", context.packageName)
-    return if (resId != 0) stringResource(resId) else nomeDB
 }

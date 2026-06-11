@@ -16,6 +16,8 @@ import androidx.core.os.LocaleListCompat
 import androidx.navigation.NavController
 import com.example.vaccinibiologicibrunosvezia.R
 import com.example.vaccinibiologicibrunosvezia.data.repository.VaccineViewModel
+import com.example.vaccinibiologicibrunosvezia.ui.theme.Verdino
+
 
 @Composable
 fun SchermataVacciniPrec(navController: NavController, viewModel: VaccineViewModel) {
@@ -53,12 +55,11 @@ fun SchermataVacciniPrec(navController: NavController, viewModel: VaccineViewMod
             Button(
                 onClick = { navController.popBackStack() },
                 modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(containerColor = _root_ide_package_.com.example.vaccinibiologicibrunosvezia.ui.theme.Verdino)
+                colors = ButtonDefaults.buttonColors(containerColor = Verdino)
             ) {
                 Text(text = stringResource(R.string.confirm_button))
             }
         }
-
 
         TextButton(
             onClick = {

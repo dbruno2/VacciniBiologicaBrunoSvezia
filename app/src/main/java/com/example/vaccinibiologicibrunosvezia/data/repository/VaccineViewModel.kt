@@ -22,7 +22,6 @@ class VaccineViewModel(
     private val repository: VaccineRepository
 ) : ViewModel() {
 
-
     var uiState by mutableStateOf(VaccineUiState())
         private set
 
@@ -39,7 +38,7 @@ class VaccineViewModel(
         }
     }
 
-    //seleziona vaccino fatto
+
     fun toggleVaccineSelection(vaccineId: Int) {
         val currentIds = uiState.selectedVaccineIds
 
@@ -52,7 +51,7 @@ class VaccineViewModel(
         uiState = uiState.copy(selectedVaccineIds = updatedIds)
     }
 
-    // seleziona condizione clinica
+
     fun toggleConditionSelection(condition: String) {
         val currentConditions = uiState.selectedConditions
 
@@ -73,6 +72,7 @@ class VaccineViewModel(
             val results = mutableListOf<Recommendation>()
 
             for (rule in rules) {
+
                 val therapyOk = rule.therapy == null || rule.therapy == input.terapiaBiologica
                 val ageOk = (rule.minAge == null || input.eta >= rule.minAge) &&
                             (rule.maxAge == null || input.eta <= rule.maxAge)
@@ -83,9 +83,10 @@ class VaccineViewModel(
                     val vaccine = vaccines.find { it.id == rule.vaccineId }
                     
                     if (vaccine != null && vaccine.id !in input.vacciniEffettuati) {
+                        
 
                         val isContraindicated = vaccine.isLive && (
-                            input.terapiaBiologica == "anti-TNF" ||
+                            input.terapiaBiologica == "anti-TNF" || 
                             input.terapiaBiologica == "immunosoppressori"
                         )
 
@@ -94,6 +95,7 @@ class VaccineViewModel(
                     }
                 }
             }
+
 
             uiState = uiState.copy(
                 recommendations = results.distinctBy { it.vaccine.id },

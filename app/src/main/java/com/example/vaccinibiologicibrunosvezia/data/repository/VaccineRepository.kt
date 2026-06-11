@@ -5,6 +5,7 @@ import com.example.vaccinibiologicibrunosvezia.data.local.dao.VaccineDao
 import com.example.vaccinibiologicibrunosvezia.data.local.entity.VaccineEntity
 import kotlinx.coroutines.flow.Flow
 
+
 class VaccineRepository(
     private val vaccineDao: VaccineDao,
     private val ruleDao: RuleDao

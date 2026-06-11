@@ -20,22 +20,27 @@ import androidx.navigation.NavController
 import com.example.vaccinibiologicibrunosvezia.R
 import com.example.vaccinibiologicibrunosvezia.data.repository.VaccineViewModel
 import com.example.vaccinibiologicibrunosvezia.model.PatientInput
+import com.example.vaccinibiologicibrunosvezia.ui.theme.Verdino
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewModel) {
+
     val state = viewModel.uiState
 
     var expanded by remember { mutableStateOf(false) }
-
-    // recupera le terapie dalle risorse
-    val terapie = stringArrayResource(R.array.terapie)
-
+    val terapieDisplay = stringArrayResource(R.array.terapie)
+    val terapieKeys = listOf("anti-TNF", "anti-IL17", "anti-IL23", "immunosoppressori")
     val configuration = LocalConfiguration.current
 
-    var terapiaSelezionata by rememberSaveable { mutableStateOf("") }
+    var terapiaSelezionataKey by rememberSaveable { mutableStateOf("") }
     var etaText by rememberSaveable { mutableStateOf("") }
+
+    val terapiaVisualizzata = if (terapiaSelezionataKey.isEmpty()) "" else {
+        val index = terapieKeys.indexOf(terapiaSelezionataKey)
+        if (index != -1) terapieDisplay[index] else terapiaSelezionataKey
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -50,14 +55,14 @@ fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewMode
             Text(stringResource(R.string.title), fontSize = 40.sp)
             Spacer(modifier = Modifier.height(20.dp))
 
-            // Menu a tendina per terapia biologica
+
             ExposedDropdownMenuBox(
                 expanded = expanded,
                 onExpandedChange = { expanded = !expanded },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 OutlinedTextField(
-                    value = terapiaSelezionata,
+                    value = terapiaVisualizzata,
                     onValueChange = {},
                     readOnly = true,
                     label = { Text(stringResource(R.string.terapia_biologica)) },
@@ -66,11 +71,11 @@ fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewMode
                 )
 
                 ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                    terapie.forEach { terapia ->
+                    terapieDisplay.forEachIndexed { index, terapia ->
                         DropdownMenuItem(
                             text = { Text(terapia) },
                             onClick = {
-                                terapiaSelezionata = terapia
+                                terapiaSelezionataKey = terapieKeys[index]
                                 expanded = false
                             }
                         )
@@ -79,7 +84,6 @@ fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewMode
             }
 
             Spacer(modifier = Modifier.height(10.dp))
-
 
             OutlinedTextField(
                 value = etaText,
@@ -132,7 +136,7 @@ fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewMode
             Button(
                 onClick = {
                     val input = PatientInput(
-                        terapiaBiologica = terapiaSelezionata,
+                        terapiaBiologica = terapiaSelezionataKey,
                         eta = etaText.toIntOrNull() ?: 0,
                         condizioni = state.selectedConditions.toList(),
                         vacciniEffettuati = state.selectedVaccineIds.toList()
@@ -140,7 +144,7 @@ fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewMode
                     viewModel.calculateRecommendations(input)
                     navController.navigate("secondaria")
                 },
-                colors = ButtonDefaults.buttonColors(containerColor = _root_ide_package_.com.example.vaccinibiologicibrunosvezia.ui.theme.Verdino),
+                colors = ButtonDefaults.buttonColors(containerColor = Verdino),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(stringResource(R.string.calcola))
