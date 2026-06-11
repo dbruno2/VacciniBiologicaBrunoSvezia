@@ -9,9 +9,7 @@ import com.example.vaccinibiologicibrunosvezia.data.local.entity.VaccineEntity
 import com.example.vaccinibiologicibrunosvezia.model.*
 import kotlinx.coroutines.launch
 
-/**
- * VaccineUiState: Classe che contiene tutti i dati necessari alla UI.
- */
+
 data class VaccineUiState(
     val recommendations: List<Recommendation> = emptyList(),
     val allVaccines: List<VaccineEntity> = emptyList(),
@@ -19,15 +17,12 @@ data class VaccineUiState(
     val selectedConditions: Set<String> = emptySet(),
 )
 
-/**
- * VaccineViewModel: Gestisce lo stato e la logica dell'applicazione.
- * Utilizza "mutableStateOf" di Compose per una gestione semplice e diretta dello stato.
- */
+
 class VaccineViewModel(
     private val repository: VaccineRepository
 ) : ViewModel() {
 
-    // Stato della UI esposto direttamente come variabile osservabile da Compose
+
     var uiState by mutableStateOf(VaccineUiState())
         private set
 
@@ -35,17 +30,16 @@ class VaccineViewModel(
         loadVaccines()
     }
 
-    // Carica i vaccini dal database
     private fun loadVaccines() {
         viewModelScope.launch {
-            // Raccogliamo i dati dal database e aggiorniamo lo stato
+
             repository.getVaccines().collect { vaccines ->
                 uiState = uiState.copy(allVaccines = vaccines)
             }
         }
     }
 
-    // Funzione per selezionare/deselezionare un vaccino fatto
+    //seleziona vaccino fatto
     fun toggleVaccineSelection(vaccineId: Int) {
         val currentIds = uiState.selectedVaccineIds
 
@@ -58,7 +52,7 @@ class VaccineViewModel(
         uiState = uiState.copy(selectedVaccineIds = updatedIds)
     }
 
-    // Funzione per selezionare/deselezionare una condizione clinica
+    // seleziona condizione clinica
     fun toggleConditionSelection(condition: String) {
         val currentConditions = uiState.selectedConditions
 
@@ -79,7 +73,6 @@ class VaccineViewModel(
             val results = mutableListOf<Recommendation>()
 
             for (rule in rules) {
-                // therapyOk verifica se la regola si applica al paziente attuale
                 val therapyOk = rule.therapy == null || rule.therapy == input.terapiaBiologica
                 val ageOk = (rule.minAge == null || input.eta >= rule.minAge) &&
                             (rule.maxAge == null || input.eta <= rule.maxAge)
@@ -91,7 +84,6 @@ class VaccineViewModel(
                     
                     if (vaccine != null && vaccine.id !in input.vacciniEffettuati) {
 
-                        // Controlliamo le controindicazioni
                         val isContraindicated = vaccine.isLive && (
                             input.terapiaBiologica == "anti-TNF" ||
                             input.terapiaBiologica == "immunosoppressori"
@@ -103,7 +95,6 @@ class VaccineViewModel(
                 }
             }
 
-            // Aggiorniamo
             uiState = uiState.copy(
                 recommendations = results.distinctBy { it.vaccine.id },
             )

@@ -66,7 +66,6 @@ fun SchermataVaccini(viewModel: VaccineViewModel, navController: NavController) 
             }
         }
 
-        // Tasto lingua
         TextButton(
             onClick = {
                 val next = if (configuration.locales[0].language.startsWith("en")) "it" else "en"
@@ -80,9 +79,3 @@ fun SchermataVaccini(viewModel: VaccineViewModel, navController: NavController) 
 }
 
 
-@Composable
-fun getTraduzioneVaccino(nomeDB: String): String {
-    val context = LocalContext.current
-    val resId = context.resources.getIdentifier(nomeDB, "string", context.packageName)
-    return if (resId != 0) stringResource(resId) else nomeDB
-}

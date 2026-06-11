@@ -4,6 +4,9 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -65,4 +68,11 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+}
+
+@Composable
+fun getTraduzioneVaccino(nomeDB: String): String {
+    val context = LocalContext.current
+    val resId = context.resources.getIdentifier(nomeDB, "string", context.packageName)
+    return if (resId != 0) stringResource(resId) else nomeDB
 }

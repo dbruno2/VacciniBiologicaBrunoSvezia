@@ -59,7 +59,7 @@ fun SchermataVacciniPrec(navController: NavController, viewModel: VaccineViewMod
             }
         }
 
-        // Tasto lingua
+
         TextButton(
             onClick = {
                 val next = if (configuration.locales[0].language.startsWith("en")) "it" else "en"

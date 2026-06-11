@@ -61,7 +61,6 @@ fun SchermataCondizioni(navController: NavController, viewModel: VaccineViewMode
             }
         }
 
-        // Tasto della lingua
         TextButton(
             onClick = {
                 val next = if (configuration.locales[0].language.startsWith("en")) "it" else "en"

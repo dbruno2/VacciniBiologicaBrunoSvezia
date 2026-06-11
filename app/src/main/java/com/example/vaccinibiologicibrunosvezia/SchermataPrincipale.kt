@@ -80,7 +80,7 @@ fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewMode
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            // Campo di testo per l'Età
+
             OutlinedTextField(
                 value = etaText,
                 onValueChange = { etaText = it },
@@ -90,7 +90,7 @@ fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewMode
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            // Selezione condizioni cliniche (in un'altra schermata)
+
             Box(modifier = Modifier.fillMaxWidth().clickable { navController.navigate("schermata_condizioni") }) {
                 OutlinedTextField(
                     value = if (state.selectedConditions.isNotEmpty()) "${state.selectedConditions.size} selezionate" else "",
@@ -109,7 +109,7 @@ fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewMode
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            // Selezione vaccini precedenti (altra schermata)
+
             Box(modifier = Modifier.fillMaxWidth().clickable { navController.navigate("vaccini_prec") }) {
                 OutlinedTextField(
                     value = if (state.selectedVaccineIds.isNotEmpty()) "${state.selectedVaccineIds.size} selezionati" else "",
@@ -128,7 +128,7 @@ fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewMode
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // Bottone di calcolo
+
             Button(
                 onClick = {
                     val input = PatientInput(
@@ -147,7 +147,7 @@ fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewMode
             }
         }
 
-        // Tasto cambio lingua
+
         TextButton(
             onClick = {
                 val current = configuration.locales[0].language
