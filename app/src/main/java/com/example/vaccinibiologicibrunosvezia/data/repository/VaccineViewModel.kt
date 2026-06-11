@@ -71,10 +71,6 @@ class VaccineViewModel(
         uiState = uiState.copy(selectedConditions = updatedConditions)
     }
 
-    /**
-     * Calcola le raccomandazioni basandosi sui dati inseriti.
-     * Questa è la logica centrale dell'applicazione.
-     */
     fun calculateRecommendations(input: PatientInput) {
         viewModelScope.launch {
 
@@ -83,7 +79,7 @@ class VaccineViewModel(
             val results = mutableListOf<Recommendation>()
 
             for (rule in rules) {
-                // Verifichiamo se la regola si applica al paziente attuale
+                // therapyOk verifica se la regola si applica al paziente attuale
                 val therapyOk = rule.therapy == null || rule.therapy == input.terapiaBiologica
                 val ageOk = (rule.minAge == null || input.eta >= rule.minAge) &&
                             (rule.maxAge == null || input.eta <= rule.maxAge)
@@ -94,10 +90,10 @@ class VaccineViewModel(
                     val vaccine = vaccines.find { it.id == rule.vaccineId }
                     
                     if (vaccine != null && vaccine.id !in input.vacciniEffettuati) {
-                        
-                        // Controlliamo se ci sono controindicazioni (vaccini vivi + certe terapie)
+
+                        // Controlliamo le controindicazioni
                         val isContraindicated = vaccine.isLive && (
-                            input.terapiaBiologica == "anti-TNF" || 
+                            input.terapiaBiologica == "anti-TNF" ||
                             input.terapiaBiologica == "immunosoppressori"
                         )
 
@@ -107,7 +103,7 @@ class VaccineViewModel(
                 }
             }
 
-            // Aggiorniamo lo stato con i risultati (rimuovendo duplicati per sicurezza)
+            // Aggiorniamo
             uiState = uiState.copy(
                 recommendations = results.distinctBy { it.vaccine.id },
             )

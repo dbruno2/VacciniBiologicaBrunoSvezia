@@ -21,27 +21,21 @@ import com.example.vaccinibiologicibrunosvezia.data.repository.VaccineViewModel
 import com.example.vaccinibiologicibrunosvezia.model.PatientInput
 import com.example.vaccinibiologicibrunosvezia.ui.theme.Verdino
 
-/**
- * SchermataPrincipale: Il form di inserimento dati per il paziente.
- */
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewModel) {
-    // Accediamo direttamente allo stato del ViewModel (grazie a mutableStateOf)
     val state = viewModel.uiState
 
     var expanded by remember { mutableStateOf(false) }
-    val terapieDisplay = stringArrayResource(R.array.terapie)
-    val terapieKeys = listOf("anti-TNF", "anti-IL17", "anti-IL23", "immunosoppressori")
+
+    // recupera le terapie dalle risorse
+    val terapie = stringArrayResource(R.array.terapie)
+
     val configuration = LocalConfiguration.current
 
-    var terapiaSelezionataKey by rememberSaveable { mutableStateOf("") }
+    var terapiaSelezionata by rememberSaveable { mutableStateOf("") }
     var etaText by rememberSaveable { mutableStateOf("") }
-
-    val terapiaVisualizzata = if (terapiaSelezionataKey.isEmpty()) "" else {
-        val index = terapieKeys.indexOf(terapiaSelezionataKey)
-        if (index != -1) terapieDisplay[index] else terapiaSelezionataKey
-    }
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -56,14 +50,14 @@ fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewMode
             Text(stringResource(R.string.title), fontSize = 40.sp)
             Spacer(modifier = Modifier.height(20.dp))
 
-            // Menu a tendina per la Terapia Biologica
+            // Menu a tendina per terapia biologica
             ExposedDropdownMenuBox(
                 expanded = expanded,
                 onExpandedChange = { expanded = !expanded },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 OutlinedTextField(
-                    value = terapiaVisualizzata,
+                    value = terapiaSelezionata,
                     onValueChange = {},
                     readOnly = true,
                     label = { Text(stringResource(R.string.terapia_biologica)) },
@@ -72,11 +66,11 @@ fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewMode
                 )
 
                 ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                    terapieDisplay.forEachIndexed { index, terapia ->
+                    terapie.forEach { terapia ->
                         DropdownMenuItem(
                             text = { Text(terapia) },
                             onClick = {
-                                terapiaSelezionataKey = terapieKeys[index]
+                                terapiaSelezionata = terapia
                                 expanded = false
                             }
                         )
@@ -96,7 +90,7 @@ fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewMode
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            // Selezione Condizioni Cliniche (naviga verso un'altra schermata)
+            // Selezione condizioni cliniche (in un'altra schermata)
             Box(modifier = Modifier.fillMaxWidth().clickable { navController.navigate("schermata_condizioni") }) {
                 OutlinedTextField(
                     value = if (state.selectedConditions.isNotEmpty()) "${state.selectedConditions.size} selezionate" else "",
@@ -115,7 +109,7 @@ fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewMode
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            // Selezione Vaccini Precedenti
+            // Selezione vaccini precedenti (altra schermata)
             Box(modifier = Modifier.fillMaxWidth().clickable { navController.navigate("vaccini_prec") }) {
                 OutlinedTextField(
                     value = if (state.selectedVaccineIds.isNotEmpty()) "${state.selectedVaccineIds.size} selezionati" else "",
@@ -138,7 +132,7 @@ fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewMode
             Button(
                 onClick = {
                     val input = PatientInput(
-                        terapiaBiologica = terapiaSelezionataKey,
+                        terapiaBiologica = terapiaSelezionata,
                         eta = etaText.toIntOrNull() ?: 0,
                         condizioni = state.selectedConditions.toList(),
                         vacciniEffettuati = state.selectedVaccineIds.toList()
@@ -153,7 +147,7 @@ fun SchermataPrincipale(navController: NavController, viewModel: VaccineViewMode
             }
         }
 
-        // Tasto cambio lingua rapido
+        // Tasto cambio lingua
         TextButton(
             onClick = {
                 val current = configuration.locales[0].language

@@ -17,9 +17,6 @@ import androidx.navigation.NavController
 import com.example.vaccinibiologicibrunosvezia.data.repository.VaccineViewModel
 import com.example.vaccinibiologicibrunosvezia.ui.theme.Verdino
 
-/**
- * SchermataVacciniPrec: permette di selezionare i vaccini già effettuati.
- */
 @Composable
 fun SchermataVacciniPrec(navController: NavController, viewModel: VaccineViewModel) {
     val state = viewModel.uiState

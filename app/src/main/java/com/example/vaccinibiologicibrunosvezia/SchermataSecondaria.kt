@@ -20,9 +20,7 @@ import com.example.vaccinibiologicibrunosvezia.ui.theme.Verdino
 
 import androidx.compose.ui.platform.LocalContext
 
-/**
- * SchermataVaccini: Mostra i risultati finali del calcolo vaccinale.
- */
+
 @Composable
 fun SchermataVaccini(viewModel: VaccineViewModel, navController: NavController) {
     val state = viewModel.uiState
@@ -40,7 +38,6 @@ fun SchermataVaccini(viewModel: VaccineViewModel, navController: NavController) 
 
                 LazyColumn(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     items(state.recommendations) { rec ->
-                        // Traduzione dinamica basata sul nome del database
                         val nomeTradotto = getTraduzioneVaccino(rec.vaccine.name)
                         val statoTradotto = when (rec.type) {
                             RecommendationType.RACCOMANDATO -> stringResource(R.string.type_raccomandato)
@@ -82,10 +79,7 @@ fun SchermataVaccini(viewModel: VaccineViewModel, navController: NavController) 
     }
 }
 
-/**
- * Risoluzione dinamica della traduzione basata sul nome della risorsa (es. "vaccine_antinfluenzale").
- * Se non trovata, ritorna il nome originale.
- */
+
 @Composable
 fun getTraduzioneVaccino(nomeDB: String): String {
     val context = LocalContext.current

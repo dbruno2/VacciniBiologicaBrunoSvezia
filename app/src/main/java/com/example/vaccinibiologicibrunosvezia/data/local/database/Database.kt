@@ -10,10 +10,6 @@ import com.example.vaccinibiologicibrunosvezia.data.local.dao.VaccineDao
 import com.example.vaccinibiologicibrunosvezia.data.local.entity.RuleEntity
 import com.example.vaccinibiologicibrunosvezia.data.local.entity.VaccineEntity
 
-/**
- * AppDatabase: Classe principale per l'accesso ai dati con Room.
- * Gestisce la persistenza in modo minimale, senza logica di popolamento interna.
- */
 @Database(entities = [VaccineEntity::class, RuleEntity::class], version = 1)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -25,9 +21,7 @@ abstract class AppDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
-        /**
-         * getDatabase: Pattern Singleton per garantire un'unica istanza del DB.
-         */
+        // getDatabase garantisce una sola istanza
         fun getDatabase(context: Context): AppDatabase {
             if (INSTANCE == null) {
                 INSTANCE = Room.databaseBuilder(

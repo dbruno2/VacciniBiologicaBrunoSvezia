@@ -3,7 +3,7 @@ package com.example.vaccinibiologicibrunosvezia
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -18,16 +18,13 @@ import androidx.navigation.NavController
 import com.example.vaccinibiologicibrunosvezia.data.repository.VaccineViewModel
 import com.example.vaccinibiologicibrunosvezia.ui.theme.Verdino
 
-/**
- * SchermataCondizioni: permette all'utente di selezionare le proprie patologie.
- */
 @Composable
 fun SchermataCondizioni(navController: NavController, viewModel: VaccineViewModel) {
     val state = viewModel.uiState
     val configuration = LocalConfiguration.current
 
-    val nomiCondizioni = stringArrayResource(R.array.condizioni)
-    val chiaviDatabase = listOf("DIABETE", "BPCO", "CARDIOPATIA", "IMMUNODEPRESSIONE", "MALATTIA_RENALE", "OBESITA", "ASMA", "EPATOPATIA")
+    // recupera le condizioni dalle risorse
+    val condizioni = stringArrayResource(R.array.condizioni)
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -39,19 +36,16 @@ fun SchermataCondizioni(navController: NavController, viewModel: VaccineViewMode
             Spacer(modifier = Modifier.height(20.dp))
 
             LazyColumn(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                itemsIndexed(nomiCondizioni.toList()) { index, nome ->
-                    val chiave = chiaviDatabase.getOrElse(index) { "" }
-                    if (chiave.isNotEmpty()) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Checkbox(
-                                checked = state.selectedConditions.contains(chiave),
-                                onCheckedChange = { viewModel.toggleConditionSelection(chiave) }
-                            )
-                            Text(text = nome, fontSize = 18.sp)
-                        }
+                items(condizioni.toList()) { condizione ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Checkbox(
+                            checked = state.selectedConditions.contains(condizione),
+                            onCheckedChange = { viewModel.toggleConditionSelection(condizione) }
+                        )
+                        Text(text = condizione, fontSize = 18.sp)
                     }
                 }
             }
@@ -67,7 +61,7 @@ fun SchermataCondizioni(navController: NavController, viewModel: VaccineViewMode
             }
         }
 
-        // Tasto lingua
+        // Tasto della lingua
         TextButton(
             onClick = {
                 val next = if (configuration.locales[0].language.startsWith("en")) "it" else "en"
